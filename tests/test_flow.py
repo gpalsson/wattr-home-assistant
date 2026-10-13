@@ -1,38 +1,10 @@
 import asyncio
-from pathlib import Path
 from unittest.mock import AsyncMock, Mock, patch
 
-import pytest
-from homeassistant import loader
-from homeassistant.config_entries import ConfigEntries
-from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResultType
 
 from custom_components.wattr.api import DeviceFlowError
 from custom_components.wattr.config_flow import WattrConfigFlow
-
-
-@pytest.fixture
-async def hass(tmp_path):
-    config = tmp_path / "config"
-    (config / "custom_components").mkdir(parents=True)
-    (config / "custom_components" / "wattr").symlink_to(
-        Path(__file__).resolve().parents[1] / "custom_components" / "wattr",
-        target_is_directory=True,
-    )
-    hass = HomeAssistant(str(config))
-    loader.async_setup(hass)
-    from homeassistant.helpers import frame
-
-    frame.async_setup(hass)
-    hass.config_entries = ConfigEntries(hass, {})
-    await hass.config_entries.async_initialize()
-    with patch(
-        "custom_components.wattr.config_flow.async_get_clientsession",
-        return_value=Mock(),
-    ):
-        yield hass
-    await hass.async_stop(force=True)
 
 
 def device():
@@ -151,7 +123,7 @@ async def test_actual_platform_setup_and_recovery(hass, tokens, snapshot):
     from homeassistant.config_entries import ConfigEntry, ConfigEntryState
     from homeassistant.helpers import device_registry, entity_registry
 
-    from custom_components.wattr import async_setup_entry, async_unload_entry
+    from custom_components.wattr import async_unload_entry
     from custom_components.wattr.api import WattrError
 
     entry = ConfigEntry(
@@ -165,7 +137,7 @@ async def test_actual_platform_setup_and_recovery(hass, tokens, snapshot):
         options={},
         discovery_keys=MappingProxyType({}),
         subentries_data=[],
-        state=ConfigEntryState.SETUP_IN_PROGRESS,
+        state=ConfigEntryState.NOT_LOADED,
     )
     hass.config_entries._entries[entry.entry_id] = entry
     if hasattr(device_registry, "async_setup"):
@@ -179,9 +151,10 @@ async def test_actual_platform_setup_and_recovery(hass, tokens, snapshot):
             AsyncMock(return_value=snapshot),
         ),
     ):
-        async with entry.setup_lock:
-            assert await async_setup_entry(hass, entry)
-        await hass.async_block_till_done()
+        assert await asyncio.wait_for(
+            hass.config_entries.async_setup(entry.entry_id), timeout=5
+        )
+        await asyncio.wait_for(hass.async_block_till_done(), timeout=5)
         states = hass.states.async_all()
         assert len(states) >= 20, [(s.entity_id, s.state) for s in states]
         soc = next(
