@@ -1,0 +1,122 @@
+{
+  "title": "Wattr",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect",
+        "description": "Tilslut din Wattr-konto."
+      },
+      "approve": {
+        "title": "Godkend læseadgang",
+        "description": "[Åbn Wattr]({url}), log ind og godkend læseadgang. Din kode er **{code}**. Vend tilbage og tryk Send efter godkendelsen."
+      }
+    },
+    "progress": {
+      "waiting": "Venter på godkendelse hos Wattr…"
+    },
+    "error": {
+      "cannot_connect": "Kan ikke forbinde til Wattr. Prøv igen."
+    },
+    "abort": {
+      "already_configured": "Denne konto er allerede tilsluttet.",
+      "reauth_successful": "Forbindelsen er fornyet.",
+      "wrong_account": "Log ind med den oprindelige Wattr-konto.",
+      "access_denied": "Læseadgang blev ikke godkendt.",
+      "expired_token": "Koden er udløbet. Start igen.",
+      "cannot_connect": "Kan ikke forbinde til Wattr. Start igen."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "battery_soc": {
+        "name": "Batteriniveau"
+      },
+      "battery_power": {
+        "name": "Batteriets effekt"
+      },
+      "house_power": {
+        "name": "Husets effekt"
+      },
+      "grid_power": {
+        "name": "Elnettets effekt"
+      },
+      "solar_power": {
+        "name": "Solens effekt"
+      },
+      "inverter_status": {
+        "name": "Inverterstatus"
+      },
+      "read_at": {
+        "name": "Seneste måling"
+      },
+      "plan": {
+        "name": "Batteriplan"
+      },
+      "import_kwh": {
+        "name": "Købt i dag"
+      },
+      "export_kwh": {
+        "name": "Salg i dag"
+      },
+      "house_kwh": {
+        "name": "Husets forbrug i dag"
+      },
+      "car_kwh": {
+        "name": "Bilens forbrug i dag"
+      },
+      "solar_kwh": {
+        "name": "Solproduktion i dag"
+      },
+      "import_cost_dkk": {
+        "name": "Købspris i dag"
+      },
+      "export_income_dkk": {
+        "name": "Salgsindtægt i dag"
+      },
+      "savings_dkk": {
+        "name": "Sparet i dag"
+      },
+      "planned_import_kwh": {
+        "name": "Planlagt køb i dag"
+      },
+      "planned_export_kwh": {
+        "name": "Planlagt salg i dag"
+      },
+      "planned_import_cost_dkk": {
+        "name": "Planlagt købspris i dag"
+      },
+      "planned_export_income_dkk": {
+        "name": "Planlagt salgsindtægt i dag"
+      },
+      "car_soc": {
+        "name": "Bilens batteriniveau"
+      },
+      "car_read_at": {
+        "name": "Seneste bilmåling"
+      },
+      "charger_power": {
+        "name": "Ladeeffekt"
+      },
+      "charge_plan_start": {
+        "name": "Planlagt ladestart"
+      },
+      "charge_plan_end": {
+        "name": "Planlagt ladeslut"
+      },
+      "charge_plan_cost": {
+        "name": "Planlagt ladepris"
+      },
+      "charge_plan_energy": {
+        "name": "Planlagt ladeenergi"
+      }
+    },
+    "binary_sensor": {
+      "plugged_in": {
+        "name": "Tilsluttet"
+      },
+      "charging": {
+        "name": "Lader"
+      }
+    }
+  }
+}
