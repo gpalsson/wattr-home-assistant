@@ -1,0 +1,122 @@
+{
+  "title": "Wattr",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect",
+        "description": "Connect your Wattr account."
+      },
+      "approve": {
+        "title": "Approve read access",
+        "description": "[Open Wattr]({url}), sign in and approve read access. Your code is **{code}**. Return here and press Submit after approving."
+      }
+    },
+    "progress": {
+      "waiting": "Waiting for Wattr approval…"
+    },
+    "error": {
+      "cannot_connect": "Cannot reach Wattr. Try again."
+    },
+    "abort": {
+      "already_configured": "This account is already connected.",
+      "reauth_successful": "Connection renewed.",
+      "wrong_account": "Sign in with the original Wattr account.",
+      "access_denied": "Read access was not approved.",
+      "expired_token": "The code expired. Start again.",
+      "cannot_connect": "Cannot reach Wattr. Start again."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "battery_soc": {
+        "name": "Battery level"
+      },
+      "battery_power": {
+        "name": "Battery power"
+      },
+      "house_power": {
+        "name": "House power"
+      },
+      "grid_power": {
+        "name": "Grid power"
+      },
+      "solar_power": {
+        "name": "Solar power"
+      },
+      "inverter_status": {
+        "name": "Inverter status"
+      },
+      "read_at": {
+        "name": "Last measurement"
+      },
+      "plan": {
+        "name": "Battery plan"
+      },
+      "import_kwh": {
+        "name": "Bought today"
+      },
+      "export_kwh": {
+        "name": "Sold today"
+      },
+      "house_kwh": {
+        "name": "House usage today"
+      },
+      "car_kwh": {
+        "name": "Car usage today"
+      },
+      "solar_kwh": {
+        "name": "Solar production today"
+      },
+      "import_cost_dkk": {
+        "name": "Buying cost today"
+      },
+      "export_income_dkk": {
+        "name": "Sales income today"
+      },
+      "savings_dkk": {
+        "name": "Savings today"
+      },
+      "planned_import_kwh": {
+        "name": "Planned purchases today"
+      },
+      "planned_export_kwh": {
+        "name": "Planned sales today"
+      },
+      "planned_import_cost_dkk": {
+        "name": "Planned buying cost today"
+      },
+      "planned_export_income_dkk": {
+        "name": "Planned sales income today"
+      },
+      "car_soc": {
+        "name": "Car battery level"
+      },
+      "car_read_at": {
+        "name": "Last car measurement"
+      },
+      "charger_power": {
+        "name": "Charging power"
+      },
+      "charge_plan_start": {
+        "name": "Planned charge start"
+      },
+      "charge_plan_end": {
+        "name": "Planned charge end"
+      },
+      "charge_plan_cost": {
+        "name": "Planned charging cost"
+      },
+      "charge_plan_energy": {
+        "name": "Planned charging energy"
+      }
+    },
+    "binary_sensor": {
+      "plugged_in": {
+        "name": "Plugged in"
+      },
+      "charging": {
+        "name": "Charging"
+      }
+    }
+  }
+}
