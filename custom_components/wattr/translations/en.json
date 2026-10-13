@@ -108,6 +108,18 @@
       },
       "charge_plan_energy": {
         "name": "Planned charging energy"
+      },
+      "battery_voltage": {
+        "name": "Battery voltage"
+      },
+      "battery_temperature": {
+        "name": "Battery temperature"
+      },
+      "battery_charge_kwh": {
+        "name": "Battery energy charged today"
+      },
+      "battery_discharge_kwh": {
+        "name": "Battery energy discharged today"
       }
     },
     "binary_sensor": {
@@ -116,6 +128,26 @@
       },
       "charging": {
         "name": "Charging"
+      }
+    }
+  },
+  "services": {
+    "get_history": {
+      "name": "Get history",
+      "description": "Read measured 15-minute energy intervals for today or one of the previous 30 days. Does not modify recorded HA totals.",
+      "fields": {
+        "installation_id": {
+          "name": "Installation",
+          "description": "Wattr installation ID, for example gustav-palsson."
+        },
+        "date": {
+          "name": "Date",
+          "description": "Date in the Danish timezone (YYYY-MM-DD)."
+        },
+        "config_entry_id": {
+          "name": "Wattr connection",
+          "description": "Optional when more than one Wattr account is connected."
+        }
       }
     }
   }

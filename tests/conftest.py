@@ -1,7 +1,12 @@
 import copy
 import time
+from pathlib import Path
+from unittest.mock import Mock, patch
 
 import pytest
+from homeassistant import loader
+from homeassistant.config_entries import ConfigEntries
+from homeassistant.core import HomeAssistant
 
 
 @pytest.fixture
@@ -103,3 +108,26 @@ def aiohttp_test_response_compatibility(monkeypatch):
             )
 
         monkeypatch.setattr(aioresponses.core, "ClientResponse", build)
+
+
+@pytest.fixture
+async def hass(tmp_path):
+    config = tmp_path / "config"
+    (config / "custom_components").mkdir(parents=True)
+    (config / "custom_components" / "wattr").symlink_to(
+        Path(__file__).resolve().parents[1] / "custom_components" / "wattr",
+        target_is_directory=True,
+    )
+    hass = HomeAssistant(str(config))
+    loader.async_setup(hass)
+    from homeassistant.helpers import frame
+
+    frame.async_setup(hass)
+    hass.config_entries = ConfigEntries(hass, {})
+    await hass.config_entries.async_initialize()
+    with patch(
+        "custom_components.wattr.config_flow.async_get_clientsession",
+        return_value=Mock(),
+    ):
+        yield hass
+    await hass.async_stop(force=True)

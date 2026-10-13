@@ -10,11 +10,11 @@ def test_hacs_package_contract():
     assert manifest["config_flow"] is True
     assert manifest["iot_class"] == "cloud_polling"
     assert manifest["requirements"] == []
-    assert manifest["version"] == "0.1.0"
+    assert manifest["version"] == "0.2.0"
     assert (ROOT / "LICENSE").is_file()
     assert (ROOT / "custom_components/wattr/brand/icon.png").is_file()
     assert json.loads((ROOT / "hacs.json").read_text())["homeassistant"] == "2025.10.0"
-    for forbidden in ["switch.py", "button.py", "number.py", "services.yaml"]:
+    for forbidden in ["switch.py", "button.py", "number.py"]:
         assert not (ROOT / "custom_components/wattr" / forbidden).exists()
 
 

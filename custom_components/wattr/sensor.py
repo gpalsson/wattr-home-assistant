@@ -10,7 +10,13 @@ from homeassistant.components.sensor import (
     SensorEntityDescription,
     SensorStateClass,
 )
-from homeassistant.const import PERCENTAGE, UnitOfEnergy, UnitOfPower
+from homeassistant.const import (
+    PERCENTAGE,
+    UnitOfElectricPotential,
+    UnitOfEnergy,
+    UnitOfPower,
+    UnitOfTemperature,
+)
 
 from .entity import WattrEntity, discover, numeric, timestamp
 
@@ -69,6 +75,38 @@ DESCRIPTIONS = [
             ("solar_power", "has_solar"),
         ]
     ],
+    desc(
+        "battery_voltage",
+        "battery_voltage_v",
+        requires="has_inverter",
+        unit=UnitOfElectricPotential.VOLT,
+        device_class=SensorDeviceClass.VOLTAGE,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    desc(
+        "battery_temperature",
+        "battery_temperature_c",
+        requires="has_inverter",
+        unit=UnitOfTemperature.CELSIUS,
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    desc(
+        "battery_charge_kwh",
+        "today.battery_charge_kwh",
+        requires="has_inverter",
+        unit=UnitOfEnergy.KILO_WATT_HOUR,
+        device_class=SensorDeviceClass.ENERGY,
+        state_class=SensorStateClass.TOTAL,
+    ),
+    desc(
+        "battery_discharge_kwh",
+        "today.battery_discharge_kwh",
+        requires="has_inverter",
+        unit=UnitOfEnergy.KILO_WATT_HOUR,
+        device_class=SensorDeviceClass.ENERGY,
+        state_class=SensorStateClass.TOTAL,
+    ),
     desc("inverter_status", requires="has_inverter"),
     desc("read_at", device_class=SensorDeviceClass.TIMESTAMP),
     desc(
@@ -202,8 +240,26 @@ class WattrSensor(WattrEntity, SensorEntity):
     def extra_state_attributes(self):
         if self.entity_description.key == "plan":
             plan = (self.subject or {}).get("plan") or {}
-            return {"intervals": (plan.get("intervals") or [])[:400]}
-        return super().extra_state_attributes
+            return {
+                "installation_id": self.site_id,
+                "intervals": (plan.get("intervals") or [])[:400],
+            }
+        attributes = super().extra_state_attributes or {}
+        if self.entity_description.key in (
+            "battery_charge_kwh",
+            "battery_discharge_kwh",
+        ):
+            key = (
+                "charge"
+                if self.entity_description.key == "battery_charge_kwh"
+                else "discharge"
+            )
+            quality = ((self.subject or {}).get("today") or {}).get(
+                "battery_energy_quality"
+            ) or {}
+            if isinstance(quality.get(key), dict):
+                attributes = attributes | {"measurement_quality": quality[key]}
+        return attributes
 
 
 def factory(coordinator, site, kind, subject_id):

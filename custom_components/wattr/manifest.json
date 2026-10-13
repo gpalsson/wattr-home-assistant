@@ -1,11 +1,13 @@
 {
   "domain": "wattr",
   "name": "Wattr",
-  "codeowners": ["@gpalsson"],
+  "codeowners": [
+    "@gpalsson"
+  ],
   "config_flow": true,
   "documentation": "https://github.com/gpalsson/wattr-home-assistant",
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/gpalsson/wattr-home-assistant/issues",
   "requirements": [],
-  "version": "0.1.0"
+  "version": "0.2.0"
 }
