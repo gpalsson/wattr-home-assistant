@@ -8,6 +8,7 @@ ha_test_python=${HA_TEST_PYTHON:-python3}
 "$ha_test_python" -m ruff check .
 "$ha_test_python" -m pytest -q
 git diff --check
+git add -u
 git add custom_components tests scripts .github .gitignore README.md LICENSE hacs.json pyproject.toml requirements-test.txt
 if git diff --cached --name-only | grep -q '^\.local/'; then
     echo 'Refusing to commit private files.' >&2; exit 1
