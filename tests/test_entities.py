@@ -125,3 +125,28 @@ async def test_diagnostics_never_expose_tokens_or_measurements(snapshot):
         "installation_count",
     }
     assert result["installation_count"] == 1
+
+
+def test_battery_energy_voltage_temperature_are_measured(snapshot):
+    site = snapshot["installations"][0]
+    site.update(battery_voltage_v=52.4, battery_temperature_c=24.5)
+    site["today"].update(
+        battery_charge_kwh=12.3,
+        battery_discharge_kwh=8.7,
+        battery_energy_quality={"charge": {"complete": False, "coverage_seconds": 900}},
+    )
+    _, s = sensors(snapshot)
+    assert s["battery_voltage"].native_value == 52.4
+    assert s["battery_voltage"].native_unit_of_measurement == "V"
+    assert s["battery_temperature"].native_value == 24.5
+    assert s["battery_charge_kwh"].native_value == 12.3
+    assert s["battery_charge_kwh"].last_reset is not None
+    assert (
+        s["battery_charge_kwh"].extra_state_attributes["measurement_quality"][
+            "complete"
+        ]
+        is False
+    )
+    assert s["battery_discharge_kwh"].native_value == 8.7
+    del site["today"]["battery_charge_kwh"]
+    assert s["battery_charge_kwh"].native_value is None

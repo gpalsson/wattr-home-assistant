@@ -83,7 +83,9 @@ class WattrEntity(CoordinatorEntity):
     @property
     def extra_state_attributes(self):
         subject = self.subject or {}
-        return {"read_at": subject["read_at"]} if subject.get("read_at") else None
+        return {"installation_id": self.site_id} | (
+            {"read_at": subject["read_at"]} if subject.get("read_at") else {}
+        )
 
 
 def discover(coordinator, entry, async_add_entities, factory: Callable):

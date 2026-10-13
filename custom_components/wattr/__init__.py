@@ -7,6 +7,12 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from .api import WattrApi, WattrError
 from .const import PLATFORMS
 from .coordinator import WattrCoordinator
+from .history import register_history_service
+
+
+async def async_setup(hass: HomeAssistant, config: dict) -> bool:
+    register_history_service(hass)
+    return True
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:

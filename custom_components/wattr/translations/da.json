@@ -108,6 +108,18 @@
       },
       "charge_plan_energy": {
         "name": "Planlagt ladeenergi"
+      },
+      "battery_voltage": {
+        "name": "Batterispænding"
+      },
+      "battery_temperature": {
+        "name": "Batteritemperatur"
+      },
+      "battery_charge_kwh": {
+        "name": "Batteriopladning i dag"
+      },
+      "battery_discharge_kwh": {
+        "name": "Batteriafladning i dag"
       }
     },
     "binary_sensor": {
@@ -116,6 +128,26 @@
       },
       "charging": {
         "name": "Lader"
+      }
+    }
+  },
+  "services": {
+    "get_history": {
+      "name": "Hent historik",
+      "description": "Hent målte 15-minutters energiintervaller for en dag op til 30 dage tilbage. Ændrer ingen gemte HA-totaler.",
+      "fields": {
+        "installation_id": {
+          "name": "Installation",
+          "description": "Installationens ID i Wattr, f.eks. your-name."
+        },
+        "date": {
+          "name": "Dato",
+          "description": "Dato i dansk tidszone (ÅÅÅÅ-MM-DD)."
+        },
+        "config_entry_id": {
+          "name": "Wattr-forbindelse",
+          "description": "Valgfrit, hvis du har flere Wattr-konti."
+        }
       }
     }
   }
