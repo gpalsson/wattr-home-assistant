@@ -164,16 +164,18 @@ class WattrApi:
                 self.save_tokens(refreshed)
             self.tokens = refreshed
 
-    async def snapshot(self):
+    async def authenticated_get(self, path):
         await self.refresh()
         access = self.tokens["access_token"]
         try:
-            data = await self.request("GET", "/snapshot", access=access)
+            data = await self.request("GET", path, access=access)
         except WattrAuthError:
             await self.refresh(rejected_access=access)
-            data = await self.request(
-                "GET", "/snapshot", access=self.tokens["access_token"]
-            )
+            data = await self.request("GET", path, access=self.tokens["access_token"])
+        return data
+
+    async def snapshot(self):
+        data = await self.authenticated_get("/snapshot")
         if (
             data.get("api_version") != 1
             or data.get("account_id") != self.tokens["account_id"]
@@ -189,6 +191,24 @@ class WattrApi:
             )
         ):
             raise WattrError("Invalid installations")
+        return data
+
+    async def history(self, installation_id: str, day: str):
+        """Retrieve dated readings; never alter HA recorder totals."""
+        from urllib.parse import urlencode
+
+        data = await self.authenticated_get(
+            "/history?" + urlencode({"installation_id": installation_id, "date": day})
+        )
+        if (
+            data.get("api_version") != 1
+            or data.get("account_id") != self.tokens["account_id"]
+        ):
+            raise WattrAuthError("Unexpected history account or version")
+        if data.get("installation_id") != installation_id or data.get("date") != day:
+            raise WattrError("Unexpected history installation or date")
+        if not isinstance(data.get("intervals"), list) or len(data["intervals"]) > 100:
+            raise WattrError("Invalid history intervals")
         return data
 
     async def revoke(self):
