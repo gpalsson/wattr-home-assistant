@@ -38,7 +38,7 @@ Version 0.2.0 adds **Wattr: Get history** under Developer tools → Actions. Sel
 action: wattr.get_history
 data:
   installation_id: your-name
-  date: "2026-10-12"
+  date: "{{ now().date() }}"
 response_variable: wattr_history
 ```
 
