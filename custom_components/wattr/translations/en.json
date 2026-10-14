@@ -138,7 +138,7 @@
       "fields": {
         "installation_id": {
           "name": "Installation",
-          "description": "Wattr installation ID, for example gustav-palsson."
+          "description": "Wattr installation ID, for example your-name."
         },
         "date": {
           "name": "Date",

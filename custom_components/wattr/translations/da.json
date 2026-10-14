@@ -138,7 +138,7 @@
       "fields": {
         "installation_id": {
           "name": "Installation",
-          "description": "Installationens ID i Wattr, f.eks. gustav-palsson."
+          "description": "Installationens ID i Wattr, f.eks. your-name."
         },
         "date": {
           "name": "Dato",
